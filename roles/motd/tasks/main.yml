@@ -26,11 +26,12 @@
   loop:
     - "{{ motd_dir }}"
     - "{{ motd_issue_dir }}"
+    - "{{ motd_cron_dir }}"
 
 - name: Deploy motd cron.hourly script
   ansible.builtin.template:
     src: motd.j2
-    dest: "{{ motd_cron_script }}"
+    dest: "{{ motd_cron_dir }}/{{ motd_cron_script }}"
     owner: root
     group: root
     mode: "0750"

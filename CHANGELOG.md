@@ -5,6 +5,18 @@ All notable changes to the `crrlcx.bootstrap` Ansible collection will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.2] - 2026-04-27
+
+### Added
+
+- `motd` role: added `motd_cron_dir` variable to configure the cron.hourly directory path.
+
+### Changed
+
+- `motd` role: changed `motd_cron_script` default from full path to filename (`motd`).
+- `motd` role: cron script destination is now built from `{{ motd_cron_dir }}/{{ motd_cron_script }}`.
+- `motd` role: ensure `motd_cron_dir` directory exists before deploying the script.
+
 ## [1.7.1] - 2026-03-20
 
 ### Added

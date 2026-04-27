@@ -15,6 +15,7 @@ Uses fastfetch by default, neofetch on Debian Bookworm.
 ```yaml
 bootstrap_motd: false              # enable/disable role in playbook
 
+motd_cron_dir: /etc/cron.hourly    # directory for cron.hourly script
 motd_cron_script: /etc/cron.hourly/motd # path to cron.hourly script
 motd_dir: /etc/motd.d              # directory for motd files
 motd_issue_dir: /etc/issue.d       # directory for issue files

@@ -2,7 +2,8 @@
 bootstrap_motd: false
 
 ## Path to cron.hourly script
-motd_cron_script: /etc/cron.hourly/motd
+motd_cron_dir: /etc/cron.hourly
+motd_cron_script: motd
 
 ## Paths for motd/issue output
 motd_dir: /etc/motd.d
