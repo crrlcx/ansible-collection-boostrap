@@ -1,4 +1,12 @@
 ---
+- name: Strip carriage returns from .asc keyring files
+  ansible.builtin.shell:
+    cmd: find /etc/apt/keyrings -name '*.asc' -exec grep -qP '\x0d' {} \; -exec sed -i 's/\x0d//g' {} \; -print
+  register: strip_asc_result
+  changed_when: strip_asc_result.stdout != ''
+  listen:
+    - update apt cache
+
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
