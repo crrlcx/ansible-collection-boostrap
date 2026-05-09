@@ -1,6 +1,6 @@
 namespace: crrlcx
 name: bootstrap
-version: 1.7.3
+version: 1.7.4
 readme: README.md
 authors:
   - Carrol Cox <crrlcx@proton.me>
