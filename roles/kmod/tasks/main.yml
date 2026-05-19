@@ -7,12 +7,13 @@
       # /etc/modules: kernel modules to load at boot time.
       # This file contains the names of kernel modules that should be loaded
       # at boot time, one per line. Lines beginning with "#" are ignored.
-      {{ kmod_modules | default([]) | join('\n') }}
+      {{ kmod_modules | join('\n') }}
     owner: root
     group: root
     mode: "0644"
   when:
-    - kmod_modules
+    - kmod_modules is defined
+    - kmod_modules | length > 0
   notify:
     - update modprobe
 
@@ -26,12 +27,13 @@
       #
       # Syntax:  module_name [args ...]
       # If you change this file, run 'update-initramfs -ukall' afterwards
-      {{ kmod_initramfs_modules | default([]) | join('\n') }}
+      {{ kmod_initramfs_modules | join('\n') }}
     owner: root
     group: root
     mode: "0644"
   when:
-    - kmod_initramfs_modules
+    - kmod_initramfs_modules is defined
+    - kmod_initramfs_modules | length > 0
   notify:
     - update initramfs
 
@@ -55,8 +57,6 @@
     file: initramfs-hooks.yml
   when:
     - kmod_initramfs_hooks_add | bool
-  notify:
-    - update initramfs
 
 - name: Set modprobe options
   ansible.builtin.copy:
@@ -64,12 +64,13 @@
     content: |
       {{ ansible_managed | comment }}
       # If you change this file, run 'update-initramfs -u -k all' afterwards
-      {{ kmod_modprobe_options | default([]) | join('\n') }}
+      {{ kmod_modprobe_options | join('\n') }}
     owner: root
     group: root
     mode: "0644"
   when:
-    - kmod_modprobe_options
+    - kmod_modprobe_options is defined
+    - kmod_modprobe_options | length > 0
   notify:
     - update modprobe
     - update initramfs

@@ -16,3 +16,5 @@
     mode: "0755"
   with_fileglob:
     - initramfs-tools/*.sh.j2
+  notify:
+    - update initramfs

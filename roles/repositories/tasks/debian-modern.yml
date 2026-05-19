@@ -26,5 +26,9 @@
     architectures: "{{ repository.architectures | d('amd64') }}"
     signed_by: "{{ repository.key }}"
     enabled: "{{ repository.enabled | d(true) }}"
+  loop: "{{ repositories_list }}"
+  loop_control:
+    loop_var: repository
+    label: "{{ repository.name }}"
   notify:
     - update apt cache

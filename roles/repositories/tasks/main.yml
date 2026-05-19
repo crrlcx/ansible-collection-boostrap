@@ -37,10 +37,6 @@
 - name: Include modern apt repository management tasks
   ansible.builtin.include_tasks:
     file: debian-modern.yml
-  loop: "{{ repositories_list }}"
-  loop_control:
-    loop_var: repository
-    label: "{{ repository.name }}"
   when:
     - ansible_pkg_mgr == 'apt'
     - apt_deb822
