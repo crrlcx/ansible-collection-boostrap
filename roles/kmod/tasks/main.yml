@@ -1,13 +1,15 @@
 ---
 - name: Set kernel modules
   ansible.builtin.copy:
-    dest: /etc/modules
+    dest: /etc/modules-load.d/modules.conf
     content: |
-      {{ ansible_managed | comment }}
-      # /etc/modules: kernel modules to load at boot time.
-      # This file contains the names of kernel modules that should be loaded
-      # at boot time, one per line. Lines beginning with "#" are ignored.
-      {{ kmod_modules | join('\n') }}
+      # /etc/modules is obsolete and has been replaced by /etc/modules-load.d/.
+      # Please see modules-load.d(5) and modprobe.d(5) for details.
+      #
+      # Updating this file still works, but it is undocumented and unsupported.
+      {% for module in kmod_modules %}
+      {{ module }}
+      {% endfor %}
     owner: root
     group: root
     mode: "0644"
@@ -21,13 +23,12 @@
   ansible.builtin.copy:
     dest: /etc/initramfs-tools/modules
     content: |
-      {{ ansible_managed | comment }}
-      # List of modules that you want to include in your initramfs.
-      # They will be loaded at boot time in the order below.
       #
-      # Syntax:  module_name [args ...]
-      # If you change this file, run 'update-initramfs -ukall' afterwards
-      {{ kmod_initramfs_modules | join('\n') }}
+      # You must run update-initramfs(8) to effect this change.
+      #
+      {% for module in kmod_initramfs_modules %}
+      {{ module }}
+      {% endfor %}
     owner: root
     group: root
     mode: "0644"
@@ -62,9 +63,12 @@
   ansible.builtin.copy:
     dest: /etc/modprobe.d/options.conf
     content: |
-      {{ ansible_managed | comment }}
-      # If you change this file, run 'update-initramfs -u -k all' afterwards
-      {{ kmod_modprobe_options | join('\n') }}
+      #
+      # You must run update-initramfs(8) to effect this change.
+      #
+      {% for option in kmod_modprobe_options %}
+      {{ option }}
+      {% endfor %}
     owner: root
     group: root
     mode: "0644"
