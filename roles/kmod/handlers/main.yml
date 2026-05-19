@@ -1,0 +1,32 @@
+---
+- name: Update modprobe
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ kmod_modules | default([]) }}"
+  when:
+    - kmod_modules | length > 0
+  listen:
+    - update modprobe
+
+- name: Unload blacklisted modules
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ kmod_modprobe_options
+    | select('match', '^blacklist\\b')
+    | map('regex_replace', '^blacklist\\s+', '')
+    | list
+    }}"
+  when:
+    - kmod_modprobe_options | length > 0
+    - kmod_modprobe_options | select('match', '^blacklist\\b') | list | length > 0
+  listen:
+    - update modprobe
+
+# Handler for update-initramfs
+- name: Update initramfs
+  ansible.builtin.command: update-initramfs -u -k all
+  changed_when: false
+  listen:
+    - update initramfs

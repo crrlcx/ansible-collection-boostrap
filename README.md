@@ -65,6 +65,7 @@ import_playbook: crrlcx.bootstrap.bootstrap
 - [grub](roles/grub) - manage GRUB bootloader configuration and kernel cmdline parameters.
 - [hosts](roles/hosts) - manage hostname and /etc/hosts.
 - [inadyn](roles/inadyn) - manage inadyn dynamic DNS client configuration and systemd service.
+- [kmod](roles/kmod) - manage kernel module settings, initramfs modules, and modprobe options.
 - [lvm](roles/lvm) - manage LVM physical and logical volumes.
 - [motd](roles/motd) - manage MOTD and issue banners via fastfetch with cron.hourly.
 - [ntp](roles/ntp) - set timezone and sync time with systemd power.

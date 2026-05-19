@@ -5,6 +5,17 @@ All notable changes to the `crrlcx.bootstrap` Ansible collection will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-05-19
+
+### Added
+
+- `kmod` role: manage kernel module settings, initramfs modules, and modprobe options.
+
+### Changed
+
+- `bootstrap` playbook: include `kmod` role with conditional execution.
+- Documentation: added README and task files for `kmod`.
+
 ## [1.7.4] - 2026-05-09
 
 ### Changed

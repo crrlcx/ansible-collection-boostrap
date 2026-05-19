@@ -27,3 +27,4 @@ environments/local
 .DS_Store
 __MACOSX/
 
+roles/bootstrap/

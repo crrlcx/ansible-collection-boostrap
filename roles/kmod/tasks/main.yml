@@ -1,0 +1,78 @@
+---
+- name: Set kernel modules
+  ansible.builtin.copy:
+    dest: /etc/modules
+    content: |
+      {{ ansible_managed | comment }}
+      # /etc/modules: kernel modules to load at boot time.
+      # This file contains the names of kernel modules that should be loaded
+      # at boot time, one per line. Lines beginning with "#" are ignored.
+      {{ kmod_modules | default([]) | join('\n') }}
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - kmod_modules
+  notify:
+    - update modprobe
+
+- name: Set initramfs modules
+  ansible.builtin.copy:
+    dest: /etc/initramfs-tools/modules
+    content: |
+      {{ ansible_managed | comment }}
+      # List of modules that you want to include in your initramfs.
+      # They will be loaded at boot time in the order below.
+      #
+      # Syntax:  module_name [args ...]
+      # If you change this file, run 'update-initramfs -ukall' afterwards
+      {{ kmod_initramfs_modules | default([]) | join('\n') }}
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - kmod_initramfs_modules
+  notify:
+    - update initramfs
+
+- name: Set RESUME= in initramfs-tools conf
+  ansible.builtin.lineinfile:
+    dest: /etc/initramfs-tools/conf.d/resume
+    create: true
+    regexp: "^(#|)RESUME="
+    line: "RESUME={{ kmod_initramfs_resume }}"
+    state: present
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - kmod_initramfs_resume_set | bool
+  notify:
+    - update initramfs
+
+- name: Add initramfs hooks when enabled
+  ansible.builtin.include_tasks:
+    file: initramfs-hooks.yml
+  when:
+    - kmod_initramfs_hooks_add | bool
+  notify:
+    - update initramfs
+
+- name: Set modprobe options
+  ansible.builtin.copy:
+    dest: /etc/modprobe.d/options.conf
+    content: |
+      {{ ansible_managed | comment }}
+      # If you change this file, run 'update-initramfs -u -k all' afterwards
+      {{ kmod_modprobe_options | default([]) | join('\n') }}
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - kmod_modprobe_options
+  notify:
+    - update modprobe
+    - update initramfs
+
+- name: Ensure handlers are flushed
+  ansible.builtin.meta: flush_handlers

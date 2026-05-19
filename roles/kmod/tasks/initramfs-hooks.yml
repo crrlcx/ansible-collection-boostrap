@@ -1,0 +1,18 @@
+---
+- name: Create initramfs hooks directory
+  ansible.builtin.file:
+    dest: /etc/initramfs-tools/hooks
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Add initramfs hooks
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/initramfs-tools/hooks/{{ item | basename | regex_replace('.sh.j2', '') }}"
+    owner: root
+    group: root
+    mode: "0755"
+  with_fileglob:
+    - initramfs-tools/*.sh.j2

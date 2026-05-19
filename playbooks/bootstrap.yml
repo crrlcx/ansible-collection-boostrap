@@ -6,6 +6,9 @@
   collections:
     - crrlcx.bootstrap
   roles:
+    - role: crrlcx.bootstrap.kmod
+      when:
+        - bootstrap_kmod
     - role: crrlcx.bootstrap.grub
       when:
         - bootstrap_grub
