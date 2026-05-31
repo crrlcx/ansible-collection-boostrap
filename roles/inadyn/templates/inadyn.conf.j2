@@ -40,6 +40,5 @@ provider {{ provider.name }}{% if provider.index is defined and provider.index %
   {% if provider.ddns_path is defined and provider.ddns_path %}
   ddns-path       = {{ provider.ddns_path }}
   {% endif %}
-
 }
 {% endfor %}
