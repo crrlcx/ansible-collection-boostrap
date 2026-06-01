@@ -16,7 +16,7 @@
   loop_control:
     label: "{{ item }}"
 
-- name: Add repository {{ repository.name }}
+- name: Add repository
   ansible.builtin.deb822_repository:
     name: "{{ repository.name }}"
     types: deb
