@@ -5,6 +5,16 @@ All notable changes to the `crrlcx.bootstrap` Ansible collection will be documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.9] - 2026-05-31
+
+### Changed
+
+- `inadyn` role: update tasks and configuration handling for improved reliability and variable precedence.
+
+### Fixed
+
+- `inadyn` role: remove unrecognized `--background` option from `/etc/init.d/inadyn` to prevent startup failures.
+
 ## [1.8.8] - 2026-05-31
 
 ### Changed

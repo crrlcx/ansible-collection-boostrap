@@ -28,16 +28,29 @@
     owner: root
     group: debian-inadyn
     mode: "0640"
-  notify: restart inadyn
+  notify:
+    - restart inadyn
 
-- name: Test the configuration
-  ansible.builtin.command:
-    cmd: inadyn --check-config -f "{{ inadyn_config_path }}"
-  changed_when: false
+- name: Delete inadyn unrecognized option '--background'
+  ansible.builtin.lineinfile:
+    regexp: "--background"
+    state: absent
+    path: /etc/init.d/inadyn
+  notify:
+    - restart inadyn
 
 - name: Enable inadyn daemon
   ansible.builtin.lineinfile:
     regexp: "^RUN_DAEMON="
     line: 'RUN_DAEMON="yes"'
     path: /etc/default/inadyn
-  notify: restart inadyn
+  notify:
+    - restart inadyn
+
+- name: Test the configuration
+  ansible.builtin.command:
+    cmd: inadyn --check-config -f "{{ inadyn_config_path }}"
+  changed_when: false
+
+- name: Ensure inadyn handlers are flushed
+  ansible.builtin.meta: flush_handlers
